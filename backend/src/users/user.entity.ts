@@ -10,9 +10,11 @@ import {
   ManyToOne,
   JoinColumn,
   RelationId,
+  OneToMany,
 } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { UserRole } from 'src/userRoles/userRole.entity';
+import { Booking } from 'src/bookings/booking.entity';
+import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
@@ -41,6 +43,9 @@ export class User {
 
   @RelationId((user: User) => user.role)
   roleId: number;
+
+  @OneToMany(() => Booking, (booking) => booking.user)
+  bookings: Booking[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -6,6 +6,9 @@ import { UserRole } from './userRoles/userRole.entity';
 import { UsersRolesModule } from './userRoles/userRoles.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { Event } from './events/event.entity';
+import { Booking } from './bookings/booking.entity';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -20,7 +23,7 @@ import { AuthModule } from './auth/auth.module';
         username: config.get('DATABASE_USER'),
         password: config.get('MYSQL_ROOT_PASSWORD'),
         database: config.get('MYSQL_DATABASE'),
-        entities: [User, UserRole],
+        entities: [User, UserRole, Event, Booking],
         synchronize: true,
         timezone: 'Z',
       }),
@@ -28,6 +31,7 @@ import { AuthModule } from './auth/auth.module';
     UsersRolesModule,
     UsersModule,
     AuthModule,
+    EventsModule,
   ],
 })
 export class AppModule {}
