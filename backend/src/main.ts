@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { seed } from './common/fixtures';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
@@ -33,6 +34,7 @@ async function bootstrap() {
   app.use(express.json());
   app.use(cookieParser());
 
+  await seed();
   await app.listen(9000, '0.0.0.0');
 }
 bootstrap();

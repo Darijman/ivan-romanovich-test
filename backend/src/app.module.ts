@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { Event } from './events/event.entity';
 import { Booking } from './bookings/booking.entity';
 import { EventsModule } from './events/events.module';
+import { BookingsModule } from './bookings/bookings.module';
 
 @Module({
   imports: [
@@ -18,11 +19,11 @@ import { EventsModule } from './events/events.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'mysql',
-        host: config.get('DATABASE_HOST'),
+        host: config.get<string>('DATABASE_HOST'),
         port: config.get<number>('DATABASE_PORT'),
-        username: config.get('DATABASE_USER'),
-        password: config.get('MYSQL_ROOT_PASSWORD'),
-        database: config.get('MYSQL_DATABASE'),
+        username: config.get<string>('DATABASE_USER'),
+        password: config.get<string>('MYSQL_ROOT_PASSWORD'),
+        database: config.get<string>('MYSQL_DATABASE'),
         entities: [User, UserRole, Event, Booking],
         synchronize: true,
         timezone: 'Z',
@@ -32,6 +33,7 @@ import { EventsModule } from './events/events.module';
     UsersModule,
     AuthModule,
     EventsModule,
+    BookingsModule,
   ],
 })
 export class AppModule {}

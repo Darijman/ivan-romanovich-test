@@ -9,7 +9,6 @@ import {
   BeforeUpdate,
   ManyToOne,
   JoinColumn,
-  RelationId,
   OneToMany,
 } from 'typeorm';
 import { UserRole } from 'src/userRoles/userRole.entity';
@@ -41,7 +40,7 @@ export class User {
   @JoinColumn({ name: 'roleId' })
   role: UserRole;
 
-  @RelationId((user: User) => user.role)
+  @Column({ type: 'int' })
   roleId: number;
 
   @OneToMany(() => Booking, (booking) => booking.user)

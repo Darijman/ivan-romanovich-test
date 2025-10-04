@@ -1,6 +1,6 @@
 import { Event } from 'src/events/event.entity';
 import { User } from 'src/users/user.entity';
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, RelationId, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
 
 @Entity('bookings')
 export class Booking {
@@ -11,14 +11,14 @@ export class Booking {
   @JoinColumn({ name: 'eventId' })
   event: Event;
 
-  @RelationId((booking: Booking) => booking.event)
+  @Column({ type: 'int' })
   eventId: number;
 
   @ManyToOne(() => User, (user) => user.bookings, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @RelationId((booking: Booking) => booking.user)
+  @Column({ type: 'int' })
   userId: number;
 
   @CreateDateColumn()

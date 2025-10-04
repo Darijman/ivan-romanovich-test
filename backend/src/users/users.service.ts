@@ -4,12 +4,17 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { RegisterUserDto } from 'src/auth/registerUser.dto';
 import { ReqUser } from 'src/interfaces/ReqUser';
+import { UserRole } from 'src/userRoles/userRole.entity';
+import { UserRoles } from 'src/userRoles/userRoles.enum';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+
+    @InjectRepository(UserRole)
+    private userRolesRepository: Repository<UserRole>,
   ) {}
 
   async getAllUsers(): Promise<User[]> {
@@ -17,8 +22,15 @@ export class UsersService {
   }
 
   async createNewUser(registerUserDto: RegisterUserDto): Promise<User> {
-    const user = this.usersRepository.create(registerUserDto);
-    return await this.usersRepository.save(user);
+    const allRoles = await this.userRolesRepository.find();
+    const userRole = allRoles.find((role) => role.name === UserRoles.USER);
+
+    if (!userRole) {
+      throw new BadRequestException({ error: 'Something went wrong while signing up!' });
+    }
+
+    const user = this.usersRepository.create({ ...registerUserDto, roleId: userRole.id });
+    return this.usersRepository.save(user);
   }
 
   async getUserById(userId: number): Promise<User> {
