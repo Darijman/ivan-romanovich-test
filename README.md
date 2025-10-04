@@ -7,4 +7,14 @@
 
 **От себя:**
 
-Добавил роли USER & ADMIN. (AuthGuard, RolesGuard) 
+Добавил фикстуры для теста:
+
+**Users:**
+
+1. { name: 'admin', email: 'admin.official@mail.ru', password: 123456, roleId: 1 }
+2. { name: 'john1', email: 'john1.official@mail.ru', password: 123456, roleId: 2 }
+
+**User Roles:**
+
+1. ADMIN ( id - 1 )
+2. USER ( id - 2 )
