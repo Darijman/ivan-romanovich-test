@@ -25,17 +25,17 @@ export class BookingsService {
     return await this.bookingsRepository.find();
   }
 
-  async createNewBooking(createBookingDto: CreateBookingDto, reqUser: ReqUser): Promise<Booking> {
-    const { eventId } = createBookingDto;
+  async createNewBooking(createBookingDto: CreateBookingDto): Promise<Booking> {
+    const { eventId, userId } = createBookingDto;
 
     const event = await this.eventsRepository.findOne({ where: { id: eventId }, relations: ['bookings'] });
     if (!event) {
       throw new BadRequestException({ error: 'Event not found!' });
     }
 
-    const existingBooking = await this.bookingsRepository.findOne({ where: { eventId, userId: reqUser.id } });
+    const existingBooking = await this.bookingsRepository.findOne({ where: { eventId, userId } });
     if (existingBooking) {
-      throw new BadRequestException({ error: 'User already booked this event!' });
+      throw new BadRequestException({ error: 'You already booked this event!' });
     }
 
     const bookedSeats = event.bookings.length;
@@ -43,7 +43,7 @@ export class BookingsService {
       throw new BadRequestException({ error: 'No seats available!' });
     }
 
-    const booking = this.bookingsRepository.create({ eventId, userId: reqUser.id });
+    const booking = this.bookingsRepository.create({ eventId, userId });
     return await this.bookingsRepository.save(booking);
   }
 

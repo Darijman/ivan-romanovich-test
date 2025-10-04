@@ -22,9 +22,9 @@ export class BookingsController {
     return await this.bookingsService.getAllBookings();
   }
 
-  @Post()
-  async createNewBooking(@Body() createBookingDto: CreateBookingDto, @Req() req: Request): Promise<Booking> {
-    return await this.bookingsService.createNewBooking(createBookingDto, req.user);
+  @Post('/reserve')
+  async createNewBooking(@Body() createBookingDto: CreateBookingDto): Promise<Booking> {
+    return await this.bookingsService.createNewBooking(createBookingDto);
   }
 
   @Get(':bookingId')
